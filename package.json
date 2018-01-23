@@ -18,5 +18,9 @@
   },
   "keywords": [],
   "author": "Per brage",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs":{
+      "url": "https://github.com/perbrage/sectoralarm/issues"
+  },
+  "homepage": "https://github.com/perbrage/sectoralarm"
 }
