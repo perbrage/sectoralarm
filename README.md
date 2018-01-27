@@ -1,11 +1,11 @@
 # Sector Alarm Node.js Library
 
 ## Information
-A simple Node.js library to check the status and history of Swedish Sector Alarm sites. Library also includes a notify functionality that executes a callback as the alarm status changes. This library uses https://minasidor.sectoralarm.se, and is intended for Swedish Sector Alarm customers.
+A simple Node.js library to check the status and history of Swedish Sector Alarm sites. Library also includes notify functionality that executes a callback as the alarm status changes. This library uses https://minasidor.sectoralarm.se, and is intended for Swedish Sector Alarm customers.
 
 This library also supports multiple sites connected to the same customer account
 
-You can visit the Sector Alarm at http://www.sectoralarm.se
+You can visit Sector Alarm at http://www.sectoralarm.se
 
 ## Installation
 ```bash
@@ -34,7 +34,28 @@ sectoralarm.connect(email,password,siteId)
                 console.log(history);
             });
     });
+
+sectoralarm.connect(email,password,siteId)
+    .then(site => {
+        return site.status();
+    })
+    .then(status => {
+        console.log(status);
+    })
+    .catch(error => {
+        console.log(error.message);
+        console.log(error.code);
+    })
 ```
+## Error messages
+
+Error code               | Description
+------------------------ | -------------
+ERR_INVALID_CREDENTIALS  | Invalid email and/or password.
+ERR_INVALID_SESSION      | Session has timed out, use login() on the site object
+ERR_PARSING_ERROR        | Could not parse the response, this library will need updates
+ERR_COMMUNICATION_ERROR  | Could not communicate properly with sector alarm, this library will need updates
+
 ## Output
 
 **Example output from calling status**
