@@ -68,7 +68,7 @@ ERR_COMMUNICATION_ERROR  | Could not communicate properly with sector alarm, thi
   user: 'Code' }
 ```
 
-**NOTE:** armedStatus can either be armed, partialarmed or disarmed. user can be either state the user, be empty or state Code (Kod) if a code was used to arm/disarm.
+**NOTE:** armedStatus can either be armed, partialarmed or disarmed. user can be either state the user, be empty or state Code (if a code was used to arm/disarm).
 
 **Example output from calling history**
 
