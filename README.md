@@ -1,11 +1,23 @@
 # Sector Alarm Node.js Library
 
 ## Information
-A simple Node.js library to check the status and history of Swedish Sector Alarm sites. Library also includes notify functionality that executes a callback as the alarm status changes. This library uses https://minasidor.sectoralarm.se, and is intended for Swedish Sector Alarm customers.
+A simple Node.js library to check the status and history of Sector Alarm sites. Library also includes notify functionality that executes a callback as the alarm status changes. Library also supports arming, disarming and partial arming using your digit code.
 
-This library also supports multiple sites connected to the same customer account
+This library also supports multiple sites connected to the same customer account.
 
-You can visit Sector Alarm at http://www.sectoralarm.se
+## Available in countries
+
+Country     | Site                       | Verified
+---------------------------------------- | -------------
+Sweden      | http://www.sectoralarm.se  | Yes
+Norway      | http://www.sectoralarm.no  | Yes
+Finland     | http://www.sectoralarm.fi  | No
+Spain       | http://www.sectoralarm.es  | No
+Ireland     | http://www.phonewatch.ie   | No
+
+If you use this library in a country listed above as not verified, please drop me a note.
+
+You can visit Sector Alarm Group http://www.sectoralarm.com 
 
 ## Installation
 ```bash
@@ -19,20 +31,40 @@ const sectoralarm = require('sectoralarm');
 
 const email = '<Your account email>',
       password = '<Your account password>',
-      siteId = '<Your Panel/Site ID>';
+      siteId = '<Your Panel/Site ID>',
+      code = '<Code to use for arming/disarming>';
 
 sectoralarm.connect(email,password,siteId)
     .then(async (site) => {
         
         await site.status()
-            .then((status) => {
+            .then(status => {
                 console.log(status);
             });
 
         await site.history()
-            .then((history) => {
+            .then(history => {
                 console.log(history);
             });
+
+        await site.partialArm(code)
+            .then(output => {
+                console.log(output);
+            });
+
+        await site.disarm(code)
+            .then(output => {
+                console.log(output);
+            });
+
+        await site.arm(code)
+            .then(output => {
+                console.log(output);
+            });
+    })
+    .catch(error => {
+        console.log(error.message);
+        console.log(error.code);
     });
 
 sectoralarm.connect(email,password,siteId)
@@ -55,6 +87,7 @@ ERR_INVALID_CREDENTIALS  | Invalid email and/or password.
 ERR_INVALID_SESSION      | Session has timed out, use login() on the site object
 ERR_PARSING_ERROR        | Could not parse the response, this library will need updates
 ERR_COMMUNICATION_ERROR  | Could not communicate properly with sector alarm, this library will need updates
+ERR_INVALID_CODE         | Invalid code used for arming/disarming 
 
 ## Output
 
@@ -79,8 +112,14 @@ ERR_COMMUNICATION_ERROR  | Could not communicate properly with sector alarm, thi
   { time: '2018-01-20 15:14:18', action: 'disarmed', user: 'Code' },
   { time: '2018-01-19 15:51:05', action: 'armed', user: '' },
   { time: '2018-01-19 15:50:46', action: 'disarmed', user: 'Code' },
-  { time: '2018-01-19 15:50:11', action: 'partialarmed', user: '' },
+  { time: '2018-01-19 15:50:11', action: 'partialArmed', user: '' },
   { time: '2018-01-19 15:49:30', action: 'disarmed', user: 'Code' },
   { time: '2018-01-13 11:45:57', action: 'armed', user: 'Code' },
   { time: '2018-01-13 11:44:53', action: 'disarmed', user: 'Code' } ]
+```
+
+**Example output from calling arm, partialArm or disarm**
+
+```js
+{ status: 'success', name: 'Home', armedStatus: 'disarmed' }
 ```
