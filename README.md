@@ -8,7 +8,7 @@ This library also supports multiple sites connected to the same customer account
 ## Available in countries
 
 Country     | Site                       | Verified
----------------------------------------- | -------------
+----------- | -------------------------- | -----------
 Sweden      | http://www.sectoralarm.se  | Yes
 Norway      | http://www.sectoralarm.no  | Yes
 Finland     | http://www.sectoralarm.fi  | No
