@@ -60,9 +60,6 @@ describe('client.js', function() {
             return client.login('fake', 'fake', 'fake')
                 .then(cookie => {
                     expect(cookie).to.equal(accessTokenCookie);
-                })
-                .catch(error => {
-                    assert.fail();
                 });
         });
     });
@@ -99,11 +96,7 @@ describe('client.js', function() {
             return client.getCookies()
                 .then(cookie => {
                     expect(cookie).to.equal(requestTokenCookie);
-                })
-                .catch(error => {
-                    assert.fail();
                 });
-                
         })
     });
 
@@ -164,12 +157,7 @@ describe('client.js', function() {
             return client.act('fake', 'fake', 'fake', 'Total')
                 .then(response => {
                     expect(response).to.be.equal(fakeResponse);
-                })
-                .catch(error => {
-                    assert.fail();
                 });
         });
-
     });
-
 });

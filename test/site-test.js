@@ -23,11 +23,6 @@ describe('site.js', function() {
         assert.equal(site._status, "unknown");
     });
 
-    describe('#login', function () {
-
-
-    });
-
     describe('#status', function () {
         var getHistoryStub, getStatusStub, historyParserStub, statusParserStub, site;
         
@@ -259,6 +254,4 @@ describe('site.js', function() {
                 });
         });
     });
-
-
 });
