@@ -62,6 +62,7 @@ describe('site.js', function() {
             statusParserStub.restore();
         });
 
+
         it('calls status and history on client, and transformStatusToOutput on parser', function() {
             return site.status()
                 .then(history => {
@@ -214,6 +215,72 @@ describe('site.js', function() {
 
         it('calling partialArm, calls act on client and transformActionToOutput on parser', function () {
             return site.partialArm('fake')
+                .then(response => {
+                    sinon.assert.calledOnce(actStub);
+                    sinon.assert.calledOnce(parserStub);
+                });
+        });
+    });
+
+    describe('#annexArm', function () {
+        var actStub, parserStub, site;
+        
+        beforeEach(function() {
+            actStub = sinon.stub(client, 'act');
+            parserStub = sinon.stub(parser, 'transformActionToOutput');
+            actStub.resolves({ "response": "aresponse"});
+            parserStub.resolves({ "output": "output"});
+            site = new Site('email', 'password', 'siteId');
+            site._sessionCookie = 'sessionCookie';
+        });
+
+        afterEach(function() {
+            actStub.restore();
+            parserStub.restore();
+        });
+
+        it('calls act on client, with correct parameters', function() {
+            return site.annexArm('code')
+                .then(response => {
+                    sinon.assert.calledWith(actStub, 'siteId', 'sessionCookie', 'code', 'ArmAnnex');
+                });
+        });
+
+        it('calling arm annex, calls act on client and transformActionToOutput on parser', function () {
+            return site.annexArm('fake')
+                .then(response => {
+                    sinon.assert.calledOnce(actStub);
+                    sinon.assert.calledOnce(parserStub);
+                });
+        });
+    });
+
+    describe('#annexDisarm', function () {
+        var actStub, parserStub, site;
+        
+        beforeEach(function() {
+            actStub = sinon.stub(client, 'act');
+            parserStub = sinon.stub(parser, 'transformActionToOutput');
+            actStub.resolves({ "response": "aresponse"});
+            parserStub.resolves({ "output": "output"});
+            site = new Site('email', 'password', 'siteId');
+            site._sessionCookie = 'sessionCookie';
+        });
+
+        afterEach(function() {
+            actStub.restore();
+            parserStub.restore();
+        });
+
+        it('calls act on client, with correct parameters', function() {
+            return site.annexDisarm('code')
+                .then(response => {
+                    sinon.assert.calledWith(actStub, 'siteId', 'sessionCookie', 'code', 'DisarmAnnex');
+                });
+        });
+
+        it('calling disarm annex, calls act on client and transformActionToOutput on parser', function () {
+            return site.annexDisarm('fake')
                 .then(response => {
                     sinon.assert.calledOnce(actStub);
                     sinon.assert.calledOnce(parserStub);
