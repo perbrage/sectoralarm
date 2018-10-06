@@ -143,7 +143,23 @@ describe('parser.js', function() {
                     .then(output => {
                         expect(output[0].action).to.be.equal('partialArmed');
                     });
-        });    
+        });  
+
+        it('a history input annex armed status, is transformed to camelCase', function() {
+
+            var input = JSON.stringify({
+                "LogDetails":[{
+                    "Time": '2017-06-18T16:17:00',
+                    "EventType": "armedannex",
+                    "User": "a person"
+                }]
+            });
+
+            return parser.transformHistoryToOutput(input)
+                    .then(output => {
+                        expect(output[0].action).to.be.equal('armedAnnex');
+                    });
+        });   
         
         it('a history inputs user is Kod, translate to Code', function() {
 
