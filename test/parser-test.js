@@ -280,6 +280,7 @@ describe('parser.js', function () {
                 .then(output => {
                     output = JSON.parse(output);
                     expect(output[0].temperature).to.be.equal('26');
+                    expect(output[0].serialNo).to.be.equal('243002A01');
                     expect(output[1].label).to.be.equal('irnv over');
                 });
         });
