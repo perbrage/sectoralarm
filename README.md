@@ -1,7 +1,7 @@
 # Sector Alarm Node.js Library
 
 ## Information
-A node.js library to communicate with your Sector Alarm sites. Library supports status, history, notifying when alarm status change and temperatures. This library can also arm, disarm and partial arming, including annex arm/disarm using your code.
+A node.js library to communicate with your Sector Alarm sites. Library supports status, history, notifying when alarm status change and sensor readings such as temperatures. This library can also arm, disarm and partial arm, including annex arm/disarm using your code.
 
 This library also supports multiple sites connected to the same customer account.
 
@@ -115,7 +115,7 @@ ERR_INVALID_CODE         | Invalid code used for arming/disarming
   { time: '2018-01-13 11:44:53', action: 'disarmed', user: 'Code' } ]
 ```
 
-**Example output from calling arm, partialArm or disarm**
+**Example output from calling arm, partialArm, disarm, annexArm or annexDisarm**
 
 ```js
 { status: 'success', name: 'Home', armedStatus: 'disarmed' }
