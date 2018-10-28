@@ -1,7 +1,7 @@
 # Sector Alarm Node.js Library
 
 ## Information
-A simple Node.js library to check the status and history of Sector Alarm sites. Library also includes notify functionality that executes a callback as the alarm status changes. Library also supports arming, disarming and partial arming using your digit code.
+A node.js library to communicate with your Sector Alarm sites. Library supports status, history, notifying when alarm status change and temperatures. This library can also arm, disarm and partial arming, including annex arm/disarm using your code.
 
 This library also supports multiple sites connected to the same customer account.
 
@@ -38,29 +38,28 @@ sectoralarm.connect(email,password,siteId)
     .then(async (site) => {
         
         await site.status()
-            .then(status => {
-                console.log(status);
-            });
+            .then(console.log);
 
         await site.history()
-            .then(history => {
-                console.log(history);
-            });
+            .then(console.log);
+
+        await site.temperatures()
+            .then(console.log);
 
         await site.partialArm(code)
-            .then(output => {
-                console.log(output);
-            });
+            .then(console.log);
 
         await site.disarm(code)
-            .then(output => {
-                console.log(output);
-            });
+            .then(console.log);
 
         await site.arm(code)
-            .then(output => {
-                console.log(output);
-            });
+            .then(console.log);
+
+        await site.annexArm(code)
+            .then(console.log);
+
+        await site.annexDisarm(code)
+            .then(console.log);
     })
     .catch(error => {
         console.log(error.message);
@@ -71,9 +70,7 @@ sectoralarm.connect(email,password,siteId)
     .then(site => {
         return site.status();
     })
-    .then(status => {
-        console.log(status);
-    })
+    .then(console.log)
     .catch(error => {
         console.log(error.message);
         console.log(error.code);
