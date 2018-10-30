@@ -15,7 +15,9 @@ describe('parser.js', function () {
                     "PanelId": 1000,
                     "PanelDisplayName": "Home",
                     "ArmedStatus": "armed",
-                    "PartialAvalible": true
+                    "PartialAvalible": true,
+                    "AnnexAvalible": true,
+                    "StatusAnnex": "disarmed"
                 },
                 "user": "a user"
             });
@@ -26,7 +28,9 @@ describe('parser.js', function () {
                     expect(output.siteId).to.be.equal(1000);
                     expect(output.name).to.be.equal("Home");
                     expect(output.armedStatus).to.be.equal("armed");
+                    expect(output.annexArmedStatus).to.be.equal("disarmed");
                     expect(output.partialArmingAvailable).to.be.equal(true);
+                    expect(output.annexArmingAvailable).to.be.equal(true);
                     expect(output.user).to.be.equal("a user");
                 });
         });
