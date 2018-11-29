@@ -1,16 +1,18 @@
 # Sector Alarm Node.js Library
 
 ## Information
-A node.js library to communicate with your Sector Alarm sites. Library supports checking the current status, the history and also acting upon the alarm and its connected devices. 
 
-## Supported features ##
-    * Multi-site support for sites connected to the same customer account
-    * Checking current status of alarm, annex and connected door locks
-    * History of arming/disarming the alarm
-    * Temperature readings from connected sensors
-    * Acting on your alarm. Support for arming, disarming and partial arming
-    * Acting on your annex alarm. Support for Arming and disarming.
-    * Lock and unlock your connected door locks
+A node.js library to communicate with your Sector Alarm sites. Library supports checking the current status, the history and also acting upon the alarm and its connected devices.
+
+## Supported features
+
+* Multi-site support for sites connected to the same customer account
+* Checking current status of alarm, annex and connected door locks
+* History of arming/disarming the alarm
+* Temperature readings from connected sensors
+* Acting on your alarm. Support for arming, disarming and partial arming
+* Acting on your annex alarm. Support for Arming and disarming.
+* Lock and unlock your connected door locks
 
 ## Supported in the following countries
 
@@ -26,6 +28,7 @@ If you use this library in a country listed above as not verified, please drop m
 You can visit Sector Alarm Group http://www.sectoralarm.com 
 
 ## Installation
+
 ```bash
 npm install sectoralarm
 ```
@@ -43,7 +46,6 @@ const email = '<Your account email>',
 
 sectoralarm.connect(email,password,siteId)
     .then(async (site) => {
-        
         await site.status()
             .then(console.log);
 
@@ -90,6 +92,7 @@ sectoralarm.connect(email,password,siteId)
         console.log(error.code);
     })
 ```
+
 ## Error messages
 
 Error code               | Description
@@ -144,7 +147,7 @@ ERR_INVALID_CODE         | Invalid code used for arming/disarming
 Thank you for those of you who have contributed to this project, put time and effort into adding features through pull requests or in other ways helped out during development.
 
 Fredrik (https://github.com/frli4797) - Temperature sensors and annex arming development
-Frank (https://github.com/frankis78) - Door Lock testing
+Frank (https://github.com/frankis78) - Door Lock testing during development
 
 **Looking for help**
 I am currently looking for someone with cameras and smartplugs connected to a sector alarm site that want to help out with testing and/or development.
