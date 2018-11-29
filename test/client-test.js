@@ -100,6 +100,69 @@ describe('client.js', function() {
         })
     });
 
+    describe('#actOnLock', function() {
+        after(function () {
+            nock.cleanAll()
+        });
+
+        it('called with invalid command, throws error', function() {
+
+            return client.actOnLock('fake', 'fake', 'fake', 'fake', 'fake')
+                .then(cookie => {
+                    assert.fail();
+                })
+                .catch(error => {
+                    expect(error.code).to.be.equal("ERR_INVALID_COMMAND");
+                });
+        });
+
+        it('when session token expires, throws error',function() {
+            
+            nock('https://mypagesapi.sectoralarm.net')
+            .post('/Locks/Lock')
+            .reply(401);
+
+            return client.actOnLock('fake', 'fake', 'fake', 'fake', 'Lock')
+                .then(cookie => {
+                    assert.fail();
+                })
+                .catch(error => {
+                    expect(error.code).to.be.equal("ERR_INVALID_SESSION");
+                });
+        });
+
+        it('connection problems throws error',function() {
+            
+            nock('https://mypagesapi.sectoralarm.net')
+            .post('/Locks/Lock')
+            .replyWithError(404);
+
+            return client.actOnLock('fake', 'fake', 'fake', 'fake', 'Lock')
+                .then(cookie => {
+                    assert.fail();
+                })
+                .catch(error => {
+                    expect(error.code).to.be.equal("ERR_COMMUNICATION_ERROR");
+                });
+        });
+
+        it('with correct login information, returns response',function() {
+            
+            var fakeResponse = 'response';
+
+            nock('https://mypagesapi.sectoralarm.net')
+            .post('/Locks/Lock')
+            .reply(200, fakeResponse);
+
+            return client.actOnLock('fake', 'fake', 'fake', 'fake', 'Lock')
+                .then(response => {
+                    expect(response).to.be.equal(fakeResponse);
+                });
+        });
+
+
+    });
+
     describe('#act', function() {
         after(function () {
             nock.cleanAll()

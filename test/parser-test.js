@@ -19,7 +19,7 @@ describe('parser.js', function () {
                     "AnnexAvalible": true,
                     "StatusAnnex": "disarmed"
                 },
-                "user": "a user"
+                "lastInteractionBy": "a user"
             });
 
             return parser.transformStatusToOutput(input)
@@ -31,7 +31,7 @@ describe('parser.js', function () {
                     expect(output.annexArmedStatus).to.be.equal("disarmed");
                     expect(output.partialArmingAvailable).to.be.equal(true);
                     expect(output.annexArmingAvailable).to.be.equal(true);
-                    expect(output.user).to.be.equal("a user");
+                    expect(output.lastInteractionBy).to.be.equal("a user");
                 });
         });
 
@@ -44,7 +44,7 @@ describe('parser.js', function () {
                     "ArmedStatus": "partialarmed",
                     "PartialAvalible": true
                 },
-                "user": "a user"
+                "lastInteractionBy": "a user"
             });
 
             return parser.transformStatusToOutput(input)
@@ -64,6 +64,77 @@ describe('parser.js', function () {
                     expect(error.code).to.be.equal('ERR_PARSING_ERROR');
                 })
         });
+
+        it('a status with no lock information is transformed correctly', function () {
+
+            var input = JSON.stringify({
+                "Panel": {
+                    "PanelId": 1000,
+                    "PanelDisplayName": "Home",
+                    "ArmedStatus": "armed",
+                    "PartialAvalible": true,
+                    "AnnexAvalible": true,
+                    "StatusAnnex": "disarmed"
+                },
+                "Locks": [],
+                "lastInteractionBy": "a user"
+            });
+
+            return parser.transformStatusToOutput(input)
+                .then(output => {
+                    output = JSON.parse(output);
+                    expect(output.locksAvailable).to.be.equal(false);
+                });
+        });
+
+        it('a status with empty lock information is transformed correctly', function () {
+
+            var input = JSON.stringify({
+                "Panel": {
+                    "PanelId": 1000,
+                    "PanelDisplayName": "Home",
+                    "ArmedStatus": "armed",
+                    "PartialAvalible": true,
+                    "AnnexAvalible": true,
+                    "StatusAnnex": "disarmed"
+                },
+                "lastInteractionBy": "a user"
+            });
+
+            return parser.transformStatusToOutput(input)
+                .then(output => {
+                    output = JSON.parse(output);
+                    expect(output.locksAvailable).to.be.equal(false);
+                });
+        });
+
+        it('a status with 2 locks information is transformed correctly', function () {
+
+            var input = JSON.stringify({
+                "Panel": {
+                    "PanelId": 1000,
+                    "PanelDisplayName": "Home",
+                    "ArmedStatus": "armed",
+                    "PartialAvalible": true,
+                    "AnnexAvalible": true,
+                    "StatusAnnex": "disarmed"
+                },
+                "Locks":[{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"lock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null},
+                         {"Label":"yaledoorman","PanelId":1000,"Serial":"124","Status":"unlock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}],
+                "lastInteractionBy": "a user"
+            });
+
+            return parser.transformStatusToOutput(input)
+                .then(output => {
+                    output = JSON.parse(output);
+                    expect(output.locksAvailable).to.be.equal(true);
+                    expect(output.locks[0].lockId).to.be.equal('123');
+                    expect(output.locks[1].lockId).to.be.equal('124');
+                    expect(output.locks[0].status).to.be.equal('locked');
+                    expect(output.locks[1].status).to.be.equal('unlocked');
+                });
+        });
+
     });
 
     describe('#transformHistoryToOutput', function () {
@@ -274,6 +345,59 @@ describe('parser.js', function () {
 
     });
     
+    describe('#transformActionOnLockToOutput', function () {
+
+        it('lock response is transformed correctly', function () {
+
+            var input = JSON.stringify({"panelData":null,"Message":null,"Status":"success"});
+
+            return parser.transformActionOnLockToOutput(input)
+                .then(output => {
+                    output = JSON.parse(output);
+                    expect(output.status).to.be.equal('success');
+                });
+        });
+
+        it('unlock response is transformed correctly', function () {
+
+            var input = JSON.stringify({"panelData":{"PanelId":"","ArmedStatus":"disarmed","PanelDisplayName":"","StatusAnnex":"unknown","PanelTime":"\/Date(1543114611000)\/","AnnexAvalible":false,"IVDisplayStatus":false,"DisplayWizard":false},"Message":null,"Status":"success"});
+
+            return parser.transformActionOnLockToOutput(input)
+                .then(output => {
+                    output = JSON.parse(output);
+                    expect(output.status).to.be.equal('success');
+                });
+        });
+
+        it('an action that was not successful, should throw error', function () {
+
+            var input = JSON.stringify({
+                "panelData": null,
+                "status": "failed"
+            });
+
+            return parser.transformActionOnLockToOutput(input)
+                .then(output => {
+                    assert.fail();
+                })
+                .catch(error => {
+                    expect(error.code).to.be.equal('ERR_INVALID_CODE');
+                });
+        });
+
+        it('invalid input throws parsing error', function () {
+
+            return parser.transformActionOnLockToOutput('not json string')
+                .then(output => {
+                    assert.fail();
+                })
+                .catch(error => {
+                    expect(error.code).to.be.equal('ERR_PARSING_ERROR');
+                });
+        });
+
+    });
+
     describe('#transformTemperaturesToOutput', function () {
         it('can parse temperatures', function () {
 
@@ -284,8 +408,8 @@ describe('parser.js', function () {
                 .then(output => {
                     output = JSON.parse(output);
                     expect(output[0].temperature).to.be.equal('26');
-                    expect(output[0].serialNo).to.be.equal('243002A01');
-                    expect(output[1].label).to.be.equal('irnv over');
+                    expect(output[0].sensorId).to.be.equal('243002A01');
+                    expect(output[1].name).to.be.equal('irnv over');
                 });
         });
     });

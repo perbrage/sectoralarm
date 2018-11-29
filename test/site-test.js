@@ -7,8 +7,6 @@ const client = require('../lib/client.js');
 const parser = require('../lib/parser.js');
 const Site = require('../lib/site.js');
 
-
-
 describe('site.js', function() {
 
     it('when created, all parameters are set correctly', function() {
@@ -24,7 +22,7 @@ describe('site.js', function() {
     });
 
     describe('#status', function () {
-        var getHistoryStub, getStatusStub, historyParserStub, statusParserStub, site;
+        var getHistoryStub, getStatusStub, getLockStatusStub, historyParserStub, statusParserStub, site, lockStatusResponse;
         
         beforeEach(function() {
 
@@ -33,7 +31,8 @@ describe('site.js', function() {
                     "PanelId": 1000,
                     "PanelDisplayName": "Home",
                     "ArmedStatus": "armed",
-                    "PartialAvalible": true }
+                    "PartialAvalible": true },
+                "Locks": [{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"lock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]
             });
 
             var historyResponse = JSON.stringify(
@@ -43,14 +42,19 @@ describe('site.js', function() {
                     "user": "Code"
                 }]);
 
+            var lockStatusResponse = JSON.stringify([{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"lock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]);
+
             getStatusStub = sinon.stub(client, 'getStatus');
             getStatusStub.resolves(statusResponse);
+            getLockStatusStub = sinon.stub(client, 'getLockStatus')
+            getLockStatusStub.resolves(lockStatusResponse);
             getHistoryStub = sinon.stub(client, 'getHistory');
             getHistoryStub.resolves('dummy response');
             historyParserStub = sinon.stub(parser, 'transformHistoryToOutput');
             historyParserStub.resolves(historyResponse);
             statusParserStub = sinon.stub(parser, 'transformStatusToOutput');
             statusParserStub.resolves('dummy response');
+            
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
         });
@@ -58,8 +62,10 @@ describe('site.js', function() {
         afterEach(function() {
             getStatusStub.restore();
             getHistoryStub.restore();
+            getLockStatusStub.restore();
             historyParserStub.restore();
             statusParserStub.restore();
+
         });
 
 
@@ -70,6 +76,7 @@ describe('site.js', function() {
                     sinon.assert.calledOnce(getStatusStub);
                     sinon.assert.calledOnce(historyParserStub);
                     sinon.assert.calledOnce(statusParserStub)
+                    sinon.assert.calledOnce(getLockStatusStub);
                 });
 
         });
@@ -321,4 +328,71 @@ describe('site.js', function() {
                 });
         });
     });
+
+    describe('#lock', function () {
+        var actOnLockStub, parserStub, site;
+        
+        beforeEach(function() {
+            actOnLockStub = sinon.stub(client, 'actOnLock');
+            parserStub = sinon.stub(parser, 'transformActionOnLockToOutput');
+            actOnLockStub.resolves({ "response": "aresponse"});
+            parserStub.resolves({ "output": "output"});
+            site = new Site('email', 'password', 'siteId');
+            site._sessionCookie = 'sessionCookie';
+        });
+
+        afterEach(function() {
+            actOnLockStub.restore();
+            parserStub.restore();
+        });
+
+        it('calling lock, calls actOnLock on client, with correct parameters', function() {
+            return site.lock('lockId', 'code')
+                .then(response => {
+                    sinon.assert.calledWith(actOnLockStub, 'siteId', 'lockId', 'sessionCookie', 'code', 'Lock');
+                });
+        });
+
+        it('calling lock, calls actOnLock on client and transformActionOnLockToOutput on parser', function () {
+            return site.lock('lockId', 'code')
+                .then(response => {
+                    sinon.assert.calledOnce(actOnLockStub);
+                    sinon.assert.calledOnce(parserStub);
+                });
+        });
+    });
+
+    describe('#unlock', function () {
+        var actOnLockStub, parserStub, site;
+        
+        beforeEach(function() {
+            actOnLockStub = sinon.stub(client, 'actOnLock');
+            parserStub = sinon.stub(parser, 'transformActionOnLockToOutput');
+            actOnLockStub.resolves({ "response": "aresponse"});
+            parserStub.resolves({ "output": "output"});
+            site = new Site('email', 'password', 'siteId');
+            site._sessionCookie = 'sessionCookie';
+        });
+
+        afterEach(function() {
+            actOnLockStub.restore();
+            parserStub.restore();
+        });
+
+        it('calling unlock, calls actOnLock on client, with correct parameters', function() {
+            return site.unlock('lockId', 'code')
+                .then(response => {
+                    sinon.assert.calledWith(actOnLockStub, 'siteId', 'lockId', 'sessionCookie', 'code', 'Unlock');
+                });
+        });
+
+        it('calling unlock, calls actOnLock on client and transformActionOnLockToOutput on parser', function () {
+            return site.unlock('lockId', 'code')
+                .then(response => {
+                    sinon.assert.calledOnce(actOnLockStub);
+                    sinon.assert.calledOnce(parserStub);
+                });
+        });
+    });
+
 });
