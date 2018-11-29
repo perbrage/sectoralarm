@@ -143,11 +143,13 @@ ERR_INVALID_CODE         | Invalid code used for arming/disarming
 { "sensorId": "123", "name": "livingRoom", "temperature": "26" }
 ```
 
-**Contributions**
+## Contributions
+
 Thank you for those of you who have contributed to this project, put time and effort into adding features through pull requests or in other ways helped out during development.
 
-Fredrik (https://github.com/frli4797) - Temperature sensors and annex arming development
-Frank (https://github.com/frankis78) - Door Lock testing during development
+* Fredrik (https://github.com/frli4797) - Temperature sensors and annex arming development
+* Frank (https://github.com/frankis78) - Door Lock testing during development
 
-**Looking for help**
+## Looking for help
+
 I am currently looking for someone with cameras and smartplugs connected to a sector alarm site that want to help out with testing and/or development.
