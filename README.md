@@ -110,9 +110,14 @@ ERR_INVALID_CODE         | Invalid code used for arming/disarming
 ```js
 { "siteId": "38728342",
   "name": "Home",
-  "armedStatus": "armed",
-  "partialArmingAvailabile": true,
-  "user": "Code" }
+  "armedStatus": "disarmed",
+  "partialArmingAvailable": true,
+  "annexArmingAvailable": false,
+  "annexArmedStatus": "unknown",
+  "lastInteractionBy": "Code",
+  "lastInteractionTime": "2018-11-30 06:20:35",
+  "locksAvailable":false,
+  "locks":[]}
 ```
 
 **NOTE:** armedStatus can either be armed, partialArmed or disarmed and user can either be the user name, be empty or state Code (if a code was used to arm/disarm).
@@ -152,4 +157,4 @@ Thank you for those of you who have contributed to this project, put time and ef
 
 ## Looking for help
 
-I am currently looking for someone with cameras and smartplugs connected to a sector alarm site that want to help out with testing and/or development.
+I am currently looking for someone with cameras and smartplugs connected to a sector alarm site that want to help out with testing and/or development. Check the issue page and reply there.
