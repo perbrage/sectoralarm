@@ -21,8 +21,9 @@ describe('site.js', function() {
         assert.equal(site._status, "unknown");
     });
 
-    describe('#status', function () {
-        var getHistoryStub, getStatusStub, getLockStatusStub, historyParserStub, statusParserStub, site, lockStatusResponse;
+    describe('#info', function () {
+
+        var getStatusStub, parserStub;
         
         beforeEach(function() {
 
@@ -32,51 +33,67 @@ describe('site.js', function() {
                     "PanelDisplayName": "Home",
                     "ArmedStatus": "armed",
                     "PartialAvalible": true },
-                "Locks": [{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"lock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]
+                "Locks": [{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]
             });
-
-            var historyResponse = JSON.stringify(
-                [{
-                    "time": '2017-06-18 16:17:00',
-                    "action": "armed",
-                    "user": "Code"
-                }]);
-
-            var lockStatusResponse = JSON.stringify([{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"lock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]);
 
             getStatusStub = sinon.stub(client, 'getStatus');
             getStatusStub.resolves(statusResponse);
-            getLockStatusStub = sinon.stub(client, 'getLockStatus')
-            getLockStatusStub.resolves(lockStatusResponse);
-            getHistoryStub = sinon.stub(client, 'getHistory');
-            getHistoryStub.resolves('dummy response');
-            historyParserStub = sinon.stub(parser, 'transformHistoryToOutput');
-            historyParserStub.resolves(historyResponse);
-            statusParserStub = sinon.stub(parser, 'transformStatusToOutput');
-            statusParserStub.resolves('dummy response');
-            
+            parserStub = sinon.stub(parser, 'transformInfoToOutput');
+            parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
         });
 
         afterEach(function() {
             getStatusStub.restore();
-            getHistoryStub.restore();
-            getLockStatusStub.restore();
-            historyParserStub.restore();
-            statusParserStub.restore();
+            parserStub.restore();
+        });
+
+        it('calls getStatus and transformInfoToOutput on parser', function() {
+            return site.info()
+                .then(() => {
+                    sinon.assert.calledOnce(getStatusStub);
+                    sinon.assert.calledOnce(parserStub);
+                });
 
         });
 
+    });
 
-        it('calls status and history on client, and transformStatusToOutput on parser', function() {
+    describe('#status', function () {
+        var getStatusStub, parserStub;
+        
+        beforeEach(function() {
+
+            var statusResponse = JSON.stringify({
+                "Panel": {
+                    "PanelId": 1000,
+                    "PanelDisplayName": "Home",
+                    "ArmedStatus": "armed",
+                    "PartialAvalible": true },
+                "Locks": [{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]
+            });
+
+            getStatusStub = sinon.stub(client, 'getStatus');
+            getStatusStub.resolves(statusResponse);
+            parserStub = sinon.stub(parser, 'transformStatusToOutput');
+            parserStub.resolves({ "output": "output"});
+
+            site = new Site('email', 'password', 'siteId');
+            site._sessionCookie = 'sessionCookie';
+        });
+
+        afterEach(function() {
+            getStatusStub.restore();
+            parserStub.restore();
+        });
+
+
+        it('calls getStatus and transformStatusToOutput on parser', function() {
             return site.status()
-                .then(history => {
-                    sinon.assert.calledOnce(getHistoryStub);
+                .then(() => {
                     sinon.assert.calledOnce(getStatusStub);
-                    sinon.assert.calledOnce(historyParserStub);
-                    sinon.assert.calledOnce(statusParserStub)
-                    sinon.assert.calledOnce(getLockStatusStub);
+                    sinon.assert.calledOnce(parserStub);
                 });
 
         });
