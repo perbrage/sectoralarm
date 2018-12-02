@@ -4,6 +4,10 @@
 
 A node.js library to communicate with your Sector Alarm sites. Library supports checking the current status, the history and also acting upon the alarm and its connected devices.
 
+## BREAKING CHANGES IN v2.0.0
+
+In version v2.0.0, some minor changes to how to use the library has been changed, which would be considered breaking changes to previous versions. In v2.0.0+ status has been split into two methods, info and status. Some of the response messages has also changed slightly. Should you upgrade to v2.0.0 and beyond, please make sure your solution still works. Thank you.
+
 ## Supported features
 
 * Multi-site support for sites connected to the same customer account
