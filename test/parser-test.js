@@ -18,7 +18,7 @@ describe('parser.js', function () {
             expect(result).to.be.equal("code");
         });
 
-    })
+    });
 
     describe('#transformStatusToOutput', function () {
 
@@ -130,7 +130,7 @@ describe('parser.js', function () {
                 })
                 .catch(error => {
                     expect(error.code).to.be.equal('ERR_PARSING_ERROR');
-                })
+                });
         });
  
     });

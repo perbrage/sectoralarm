@@ -6,6 +6,7 @@ const nock = require('nock');
 const client = require('../lib/client.js');
 const parser = require('../lib/parser.js');
 const Site = require('../lib/site.js');
+const Settings = require("../lib/settings.js");
 
 describe('site.js', function() {
 
@@ -19,6 +20,43 @@ describe('site.js', function() {
     it('when created, all defaults are set correctly', function() {
         var site = new Site("email", "password", "siteid");
         assert.equal(site._status, "unknown");
+    });
+
+    describe('#formatOutput', function () {
+
+        it('without settings, jsonOutput is true', function() {
+            var site = new Site("email", "password", "siteid");
+            assert.equal(site._settings.jsonOutput, true);
+        });
+
+        it('with settings and jsonOutput off, jsonOutput is false', function() {
+            var settings = new Settings();
+            settings.jsonOutput = false;
+            var site = new Site("email", "password", "siteid", settings);
+            assert.equal(site._settings.jsonOutput, false);
+        });
+
+        it('with settings and jsonOutput off, returns javascript object', async function() {
+            var settings = new Settings();
+            settings.jsonOutput = false;
+            var site = new Site("email", "password", "siteid", settings);
+            var obj = { a: "test", b: "test" };
+
+            var result = await site.formatOutput(obj);
+
+            assert.equal(result.a, "test");
+        });
+
+        it('with settings and jsonOutput on, returns json string', async function() {
+            var site = new Site("email", "password", "siteid");
+            var obj = { a: "test", b: "test" };
+
+            var result = await site.formatOutput(obj);
+
+            var jsonResult = JSON.parse(result);
+
+            assert.equal(jsonResult.a, "test");
+        });
     });
 
     describe('#info', function () {
