@@ -50,6 +50,9 @@ const email = '<Your account email>',
 
 sectoralarm.connect(email,password,siteId)
     .then(async (site) => {
+        await site.info()
+            .then(console.log);
+
         await site.status()
             .then(console.log);
 
@@ -162,3 +165,45 @@ Thank you for those of you who have contributed to this project, put time and ef
 ## Looking for help
 
 I am currently looking for someone with cameras and smartplugs connected to a sector alarm site that want to help out with testing and/or development. Check the issue page and reply there.
+
+## Changelog
+
+### v1.5.0 - 2018-11-29
+
+#### Added
+
+-Support for Door locks. Lock/Unlock and status of the lock
+-Added notify support for annex
+
+### v1.4.0 - 2018-10-28
+
+#### Added
+
+-Support for temperature sensors connected to the alarm
+
+#### Fixed
+
+-Minor bug fixing
+
+### v1.3.0 - 2018-10-06
+
+#### Added
+
+-Support for arming/disarming the annex
+
+#### Fixed
+
+-Output is now proper json
+
+### v1.2.0 - 2018-04-29
+
+#### Added
+
+-Custom error, which can include the original error
+
+### v1.1.2 - 2018-04-03
+
+#### Fixed
+
+-Minor bug fixes
+-Resolved some errors in the test suite
