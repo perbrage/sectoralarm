@@ -6,7 +6,7 @@ A node.js library to communicate with your Sector Alarm sites. Library supports 
 
 ## BREAKING CHANGES IN v2.0.0
 
-In version v2.0.0, some minor changes to how to use the library has been changed, which would be considered breaking changes to previous versions. In v2.0.0+ status has been split into two methods, info and status. Some of the response messages has also changed slightly. Should you upgrade to v2.0.0 and beyond, please make sure your solution still works. Thank you.
+In version v2.0.0, some minor changes to how to use the library has been changed, which would be considered breaking changes to previous versions. In v2.0.0+ status has been split into two methods, info and status. Some of the response messages has also changed slightly. Should you upgrade to v2.0.0 and beyond, please make sure your solution still works. See new changelog at the bottom for additions and changes. Thank you.
 
 ## Supported features
 
@@ -46,9 +46,14 @@ const email = '<Your account email>',
       password = '<Your account password>',
       siteId = '<Your Panel/Site ID>',
       code = '<Code to use for arming/disarming>',
-      lockId = '<The ID of one of your locks>';
+      lockId = '<The ID of one of your locks>',
+      sensorId = '<The ID of one of your sensors>';
 
-sectoralarm.connect(email,password,siteId)
+var settings = sectoralarm.createSettings();
+
+settings.jsonOutput = false;
+
+sectoralarm.connect(email,password,siteId, settings)
     .then(async (site) => {
         await site.info()
             .then(console.log);
@@ -60,6 +65,15 @@ sectoralarm.connect(email,password,siteId)
             .then(console.log);
 
         await site.temperatures()
+            .then(console.log);
+
+        await site.temperatures(sensorId)
+            .then(console.log);
+
+        await site.locks()
+            .then(console.log);
+
+        await site.locks(lockId)
             .then(console.log);
 
         await site.partialArm(code)
@@ -168,11 +182,28 @@ I am currently looking for someone with cameras and smartplugs connected to a se
 
 ## Changelog
 
+### v2.0.0 - ???
+
+#### Added
+-New 'info' method to get general information about he site, and all the connected devices.
+-New 'locks' method gets the status of all locks connected to the alarm.
+-New 'locks' method optionally allows to filter for a specific lock.
+-Optional settings can now be supplied when connecting to a site.
+-Setting to control the output format (json or javascript Object). Default is Json.
+-Added 'createSettings' method to easily create the correct setting object.
+-Added Skeleton methods 'cameras' and 'smartPlugs' added for future development, currently not supported
+
+#### Changed
+-Calling 'status' no longer includes general information, use 'info' instead
+-Calling 'status' no longer includes lock status information, use 'locks' instead
+-Breaking change in 'temperatures' method as the output has changed some names
+-Calling 'temperatures' now optionally allows to filter for a specific sensor
+
 ### v1.5.0 - 2018-11-29
 
 #### Added
 
--Support for Door locks. Lock/Unlock and status of the lock
+-Support for door locks. 'lock' and 'unlock' can be called with a code to act on the lock.
 -Added notify support for annex
 
 ### v1.4.0 - 2018-10-28
