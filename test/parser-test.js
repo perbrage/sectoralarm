@@ -165,6 +165,21 @@ describe('parser.js', function () {
                 });
         });
 
+        it('an array with 2 locks, but only 1 is selected. Output the selected one', function () {
+
+            var input = JSON.stringify([{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"lock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null},
+                                        {"Label":"yaledoorman","PanelId":1000,"Serial":"124","Status":"unlock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]);
+
+            return parser.transformLocksToOutput(input, '123')
+                .then(output => {
+                    console.log(output);
+                    expect(output).to.be.instanceof(Array);
+                    expect(output).to.have.lengthOf(1);
+                    expect(output[0].lockId).to.be.equal('123');
+                    expect(output[0].status).to.be.equal('locked');
+                });
+        });
+
         it('invalid input throws parsing error', function () {
 
             return parser.transformLocksToOutput('not json string')
@@ -439,6 +454,20 @@ describe('parser.js', function () {
                     expect(output[0].temperature).to.be.equal('26');
                     expect(output[0].sensorId).to.be.equal('243002A01');
                     expect(output[1].name).to.be.equal('irnv over');
+                });
+        });
+
+        it('Filters the result to return only the supplied sensor information', function () {
+
+            var input = '[{"Id":null,"Label":"irnv vrum","SerialNo":"243002A01","Temprature":"26","DeviceId":null},{"Id":null,"Label":"irnv over","SerialNo":"24109105A","Temprature":"23","DeviceId":null},{"Id":null,"Label":"F1 garage","SerialNo":"24900081D","Temprature":"12","DeviceId":null}]';
+
+            return parser.transformTemperaturesToOutput(input, '24109105A')
+                .then(output => {
+                    expect(output).to.be.instanceof(Array);
+                    expect(output).to.have.lengthOf(1);
+                    expect(output[0].temperature).to.be.equal('23');
+                    expect(output[0].sensorId).to.be.equal('24109105A');
+                    expect(output[0].name).to.be.equal('irnv over');
                 });
         });
 
