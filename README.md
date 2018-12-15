@@ -182,7 +182,7 @@ I am currently looking for someone with cameras and smartplugs connected to a se
 
 ## Changelog
 
-### v2.0.0 - ???
+### v2.0.0 - 2018-12-15
 
 #### Added
 
