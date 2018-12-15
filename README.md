@@ -185,56 +185,58 @@ I am currently looking for someone with cameras and smartplugs connected to a se
 ### v2.0.0 - ???
 
 #### Added
--New 'info' method to get general information about he site, and all the connected devices.
--New 'locks' method gets the status of all locks connected to the alarm.
--New 'locks' method optionally allows to filter for a specific lock.
--Optional settings can now be supplied when connecting to a site.
--Setting to control the output format (json or javascript Object). Default is Json.
--Added 'createSettings' method to easily create the correct setting object.
--Added Skeleton methods 'cameras' and 'smartPlugs' added for future development, currently not supported
+
+* New 'info' method to get general information about he site, and all the connected devices.
+* New 'locks' method gets the status of all locks connected to the alarm.
+* New 'locks' method optionally allows to filter for a specific lock.
+* Optional settings can now be supplied when connecting to a site.
+* Setting to control the output format (json or javascript Object). Default is Json.
+* Added 'createSettings' method to easily create the correct setting object.
+* Added Skeleton methods 'cameras' and 'smartPlugs' added for future development, currently not supported.
 
 #### Changed
--Calling 'status' no longer includes general information, use 'info' instead
--Calling 'status' no longer includes lock status information, use 'locks' instead
--Breaking change in 'temperatures' method as the output has changed some names
--Calling 'temperatures' now optionally allows to filter for a specific sensor
+
+* Calling 'status' no longer includes general information, use 'info' instead.
+* Calling 'status' no longer includes lock status information, use 'locks' instead.
+* Breaking change in 'temperatures' method as the output has changed some names.
+* Calling 'temperatures' now optionally allows to filter for a specific sensor.
 
 ### v1.5.0 - 2018-11-29
 
 #### Added
 
--Support for door locks. 'lock' and 'unlock' can be called with a code to act on the lock.
--Added notify support for annex
+* Support for door locks. 'lock' and 'unlock' can be called with a code to act on the lock.
+* Added notify support for change in annex alarm status.
 
 ### v1.4.0 - 2018-10-28
 
 #### Added
 
--Support for temperature sensors connected to the alarm
+* Support for temperature sensors connected to the alarm.
 
 #### Fixed
 
--Minor bug fixing
+* Minor bug fixing.
 
 ### v1.3.0 - 2018-10-06
 
 #### Added
 
--Support for arming/disarming the annex
+* Support for arming/disarming the annex.
 
 #### Fixed
 
--Output is now proper json
+* Output is now proper json.
 
 ### v1.2.0 - 2018-04-29
 
 #### Added
 
--Custom error, which can include the original error
+* Custom error, which can include the original error.
 
 ### v1.1.2 - 2018-04-03
 
 #### Fixed
 
--Minor bug fixes
--Resolved some errors in the test suite
+* Minor bug fixes.
+* Resolved some errors in the test suite.
