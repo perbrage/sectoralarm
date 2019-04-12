@@ -182,7 +182,13 @@ I am currently looking for someone with cameras and smartplugs connected to a se
 
 ## Changelog
 
-### v2.0.1 - 2019-04-12
+### v2.0.2 - 2019-04-12
+
+#### Fixed
+
+* Updated third-party libraries to pass npm security audit
+
+### v2.0.1 - 2019-04-11
 
 #### Fixed
 

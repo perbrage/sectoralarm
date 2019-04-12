@@ -7,17 +7,17 @@
     "lib": "lib"
   },
   "dependencies": {
-    "eslint": "^5.8.0",
+    "eslint": "^5.16.0",
     "https": "^1.0.0",
     "json-mapper": "^0.0.12",
-    "moment": "^2.22.2",
-    "promise": "^8.0.2"
+    "moment": "^2.24.0",
+    "promise": "^8.0.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
     "nock": "^9.6.1",
-    "nyc": "^11.9.0",
+    "nyc": "^13.3.0",
     "sinon": "^4.5.0"
   },
   "scripts": {
