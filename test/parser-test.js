@@ -155,7 +155,6 @@ describe('parser.js', function () {
 
             return parser.transformLocksToOutput(input)
                 .then(output => {
-                    console.log(output);
                     expect(output).to.be.instanceof(Array);
                     expect(output).to.have.lengthOf(2);
                     expect(output[0].lockId).to.be.equal('123');
@@ -172,7 +171,6 @@ describe('parser.js', function () {
 
             return parser.transformLocksToOutput(input, '123')
                 .then(output => {
-                    console.log(output);
                     expect(output).to.be.instanceof(Array);
                     expect(output).to.have.lengthOf(1);
                     expect(output[0].lockId).to.be.equal('123');

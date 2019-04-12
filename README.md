@@ -182,6 +182,13 @@ I am currently looking for someone with cameras and smartplugs connected to a se
 
 ## Changelog
 
+### v2.0.1 - 2019-04-12
+
+#### Fixed
+
+* Breaking change in sector alarms api for info, status and temperatures has been resolved
+* Resolved a bug that would throw a parser error for sites without any locks connected to it
+
 ### v2.0.0 - 2018-12-15
 
 #### Added
