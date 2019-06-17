@@ -24,7 +24,7 @@ Country     | Site                       | Verified
 ----------- | -------------------------- | -----------
 Sweden      | http://www.sectoralarm.se  | Yes
 Norway      | http://www.sectoralarm.no  | Yes
-Finland     | http://www.sectoralarm.fi  | No
+Finland     | http://www.sectoralarm.fi  | Yes
 Spain       | http://www.sectoralarm.es  | No
 Ireland     | http://www.phonewatch.ie   | No
 
@@ -181,6 +181,13 @@ Thank you for those of you who have contributed to this project, put time and ef
 I am currently looking for someone with cameras and smartplugs connected to a sector alarm site that want to help out with testing and/or development. Check the issue page and reply there.
 
 ## Changelog
+
+### v2.0.3 - 2019-06-17
+
+#### Fixed
+
+* Fixed api version missmatch. Sector Alarm updated their API.
+* Finland is now also a verified country for this library.
 
 ### v2.0.2 - 2019-04-12
 
