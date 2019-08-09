@@ -122,7 +122,8 @@ ERR_INVALID_CREDENTIALS  | Invalid email and/or password.
 ERR_INVALID_SESSION      | Session has timed out, use login() on the site object
 ERR_PARSING_ERROR        | Could not parse the response, this library will need updates
 ERR_COMMUNICATION_ERROR  | Could not communicate properly with sector alarm, this library will need updates
-ERR_INVALID_CODE         | Invalid code used for arming/disarming 
+ERR_INVALID_CODE         | Invalid code used for arming/disarming
+ERR_INVALID_VERSION      | Sector alarm has changed the version on their API. Restart application or use 'login' on site object
 
 ## Output
 
@@ -181,6 +182,13 @@ Thank you for those of you who have contributed to this project, put time and ef
 I am currently looking for someone with cameras and smartplugs connected to a sector alarm site that want to help out with testing and/or development. Check the issue page and reply there.
 
 ## Changelog
+
+### v2.0.5 - 2019-08-09
+
+#### Added
+
+* Version is now auto-detected during 'login', and will use that version until application is restarted, or another 'login' request is made.
+* 'status', 'info' and 'temperatures' will now throw a ERR_INVALID_VERSION to indicate that sector alarm has updated their API. Other functions does not use version as of now.
 
 ### v2.0.3 - 2019-06-17
 
