@@ -178,12 +178,12 @@ describe('site.js', function() {
     });
 
     describe('#login', function () {
-        var loginStub, getCookiesStub;
+        var loginStub, getMetadataStub;
 
         beforeEach(function() {
             loginStub = sinon.stub(client, 'login');
-            getCookiesStub = sinon.stub(client, "getCookies");
-            getCookiesStub.resolves('cookies')
+            getMetadataStub = sinon.stub(client, "getMetadata");
+            getMetadataStub.resolves({ "version": "v1_1_68", "cookie": "cookies"})
             loginStub.resolves("sessionCookie");
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
@@ -191,14 +191,14 @@ describe('site.js', function() {
 
         afterEach(function() {
             loginStub.restore();
-            getCookiesStub.restore();
+            getMetadataStub.restore();
         });
 
-        it('login calls getCookies and login on client', function () {
+        it('login calls getMetadata and login on client', function () {
             return site.login()
                 .then(response => {
                     sinon.assert.calledOnce(loginStub);
-                    sinon.assert.calledOnce(getCookiesStub);
+                    sinon.assert.calledOnce(getMetadataStub);
                 });
        });
     

@@ -64,7 +64,7 @@ describe('client.js', function() {
         });
     });
 
-    describe('#getCookies', function() {
+    describe('#getMetadata', function() {
         
         after(function () {
             nock.cleanAll()
@@ -76,7 +76,7 @@ describe('client.js', function() {
             .head('/User/Login')
             .replyWithError(404);
 
-            return client.getCookies()
+            return client.getMetadata()
                 .then(cookie => {
                     assert.fail();
                 })
@@ -90,12 +90,12 @@ describe('client.js', function() {
             var requestTokenCookie = "mycookie";
 
             nock('https://mypagesapi.sectoralarm.net')
-            .head('/User/Login')
-            .reply(200, null, { "set-cookie": requestTokenCookie });
+            .get('/User/Login')
+            .reply(200, '/Scripts/main.js?v1_1_68"', { "set-cookie": requestTokenCookie });
 
-            return client.getCookies()
-                .then(cookie => {
-                    expect(cookie).to.equal(requestTokenCookie);
+            return client.getMetadata()
+                .then(metadata => {
+                    expect(metadata.cookie).to.equal(requestTokenCookie);
                 });
         })
     });

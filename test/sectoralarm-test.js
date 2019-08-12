@@ -25,8 +25,8 @@ describe('sectoralarm.js', function() {
             .reply(302, null, { "set-cookie": "mycookie" });
 
             loginScope = nock('https://mypagesapi.sectoralarm.net')
-            .head('/User/Login')
-            .reply(200, null, { "set-cookie": "requestTokenCookie" });
+            .get('/User/Login')
+            .reply(200, '/Scripts/main.js?v1_1_68"', { "set-cookie": "requestTokenCookie" });
         });
 
         it('When called, without settings object, defaults are assigned', function() {
