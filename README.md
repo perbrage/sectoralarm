@@ -4,7 +4,7 @@
 
 A node.js library to communicate with your Sector Alarm sites. Library supports checking the current status, the history and also acting upon the alarm and its connected devices.
 
-## BREAKING CHANGES IN v2.0.0
+## BREAKING CHANGES IN v2.0.0+
 
 In version v2.0.0, some minor changes to how to use the library has been changed, which would be considered breaking changes to previous versions. In v2.0.0+ status has been split into two methods, info and status. Some of the response messages has also changed slightly. Should you upgrade to v2.0.0 and beyond, please make sure your solution still works. See new changelog at the bottom for additions and changes. Thank you.
 
@@ -182,6 +182,10 @@ Thank you for those of you who have contributed to this project, put time and ef
 I am currently looking for someone with cameras and smartplugs connected to a sector alarm site that want to help out with testing and/or development. Check the issue page and reply there.
 
 ## Changelog
+
+### v2.0.6 - 2020-01-09
+
+* Security updates of underlying packages
 
 ### v2.0.5 - 2019-08-09
 
