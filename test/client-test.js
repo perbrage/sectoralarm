@@ -59,7 +59,7 @@ describe('client.js', function() {
 
             return client.login('fake', 'fake', 'fake')
                 .then(cookie => {
-                    expect(cookie).to.equal(accessTokenCookie);
+                    expect(cookie).to.deep.include(accessTokenCookie);
                 });
         });
     });
@@ -95,7 +95,7 @@ describe('client.js', function() {
 
             return client.getMetadata()
                 .then(metadata => {
-                    expect(metadata.cookie).to.equal(requestTokenCookie);
+                    expect(metadata.cookie).to.deep.include(requestTokenCookie);
                 });
         })
     });
