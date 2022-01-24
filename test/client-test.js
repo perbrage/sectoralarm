@@ -14,7 +14,6 @@ describe('client.js', function() {
     });
 
     describe('#login', function () {
-
         after(function () {
             nock.cleanAll()
         });
@@ -34,7 +33,7 @@ describe('client.js', function() {
                 });
         });
 
-        it('bad login information throws credentials error',function() {
+        it('bad login information throws credentials error', async function() {
             
             nock('https://mypagesapi.sectoralarm.net')
             .post('/User/Login?ReturnUrl=%2f')
@@ -49,13 +48,17 @@ describe('client.js', function() {
                 });
         });        
 
-        it('successful login returns access token', function() {
+        it('successful login returns access token', async function() {
 
             var accessTokenCookie = 'mycookie';
-
+            var headers = {
+                "set-cookie": accessTokenCookie,
+                test: 'testa'
+            };
+            console.log(headers);
             nock('https://mypagesapi.sectoralarm.net')
             .post('/User/Login?ReturnUrl=%2f')
-            .reply(302, null, { "set-cookie": accessTokenCookie });
+            .reply(302, null, headers);
 
             return client.login('fake', 'fake', 'fake')
                 .then(cookie => {
@@ -65,12 +68,11 @@ describe('client.js', function() {
     });
 
     describe('#getMetadata', function() {
-        
         after(function () {
             nock.cleanAll()
-          })
+        });
 
-        it('connection problems throws error',function() {
+        it('connection problems throws error', function() {
             
             nock('https://mypagesapi.sectoralarm.net')
             .head('/User/Login')
@@ -87,14 +89,15 @@ describe('client.js', function() {
 
         it('successful request returns request cookie', function() {
 
-            var requestTokenCookie = "mycookie";
+            var requestTokenCookie = 'mycookie';
 
             nock('https://mypagesapi.sectoralarm.net')
             .get('/User/Login')
-            .reply(200, '/Scripts/main.js?v1_1_68"', { "set-cookie": requestTokenCookie });
+            .reply(200, '/Scripts/main.js?v1_2_M03"', { 'set-cookie': requestTokenCookie });
 
             return client.getMetadata()
                 .then(metadata => {
+                    console.log(metadata.cookie);
                     expect(metadata.cookie).to.equal(requestTokenCookie);
                 });
         })
