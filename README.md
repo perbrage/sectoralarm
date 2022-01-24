@@ -183,6 +183,13 @@ I am currently looking for someone with cameras and smartplugs connected to a se
 
 ## Changelog
 
+### v2.1.0 - 2022-01-24
+
+* Retry for getStatus. For some time now, Sector alarm have been sending out errenous 401 Unauthorized status when polling to quickly. I first thought they had issues at their end,
+  but as the issue haven't been resolved, another way to tackle it is to implement retry. Many poll getStatus to see if the alarm status has changed, and then react to it if it has.
+  With this retry, there will be less errors when polling to fast. Current delay is hardcoded to 2 seconds pause, and retry will happen 3 times before exiting. To disable retry, send a 0 into the forth parameter of getStatus.
+* Security updates of underlying packages
+
 ### v2.0.6 - 2020-01-09
 
 * Security updates of underlying packages

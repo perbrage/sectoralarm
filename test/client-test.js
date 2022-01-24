@@ -55,7 +55,6 @@ describe('client.js', function() {
                 "set-cookie": accessTokenCookie,
                 test: 'testa'
             };
-            console.log(headers);
             nock('https://mypagesapi.sectoralarm.net')
             .post('/User/Login?ReturnUrl=%2f')
             .reply(302, null, headers);
