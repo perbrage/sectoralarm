@@ -3,8 +3,8 @@ var expect = require('chai').expect;
 const sinon = require('sinon');
 const https = require('https');
 const nock = require('nock');
-const client = require('../lib/client.js');
-const parser = require('../lib/parser.js');
+const Client = require('../lib/client.js');
+const Parser = require('../lib/parser.js');
 const Site = require('../lib/site.js');
 const Settings = require("../lib/settings.js");
 
@@ -73,13 +73,16 @@ describe('site.js', function() {
                     "PartialAvalible": true },
                 "Locks": [{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]
             });
-
+            var client = new Client();
+            var parser = new Parser();
             getStatusStub = sinon.stub(client, 'getStatus');
             getStatusStub.resolves(statusResponse);
             parserStub = sinon.stub(parser, 'transformInfoToOutput');
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;
         });
 
         afterEach(function() {
@@ -111,7 +114,8 @@ describe('site.js', function() {
                     "PartialAvalible": true },
                 "Locks": [{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]
             });
-
+            var client = new Client();
+            var parser = new Parser();
             getStatusStub = sinon.stub(client, 'getStatus');
             getStatusStub.resolves(statusResponse);
             parserStub = sinon.stub(parser, 'transformStatusToOutput');
@@ -119,6 +123,8 @@ describe('site.js', function() {
 
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {
@@ -141,12 +147,16 @@ describe('site.js', function() {
         var getHistoryStub, parserStub, site;
         
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             getHistoryStub = sinon.stub(client, 'getHistory');
             getHistoryStub.resolves({ "response": "response"});
             parserStub = sinon.stub(parser, 'transformHistoryToOutput');
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {
@@ -181,12 +191,16 @@ describe('site.js', function() {
         var loginStub, getMetadataStub;
 
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             loginStub = sinon.stub(client, 'login');
             getMetadataStub = sinon.stub(client, "getMetadata");
             getMetadataStub.resolves({ "version": "v1_1_68", "cookie": "cookies"})
             loginStub.resolves("sessionCookie");
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;
         });
 
         afterEach(function() {
@@ -222,12 +236,16 @@ describe('site.js', function() {
         var actStub, parserStub, site;
         
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             actStub = sinon.stub(client, 'act');
             parserStub = sinon.stub(parser, 'transformActionToOutput');
             actStub.resolves({ "response": "aresponse"});
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {
@@ -255,12 +273,16 @@ describe('site.js', function() {
         var actStub, parserStub, site;
         
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             actStub = sinon.stub(client, 'act');
             parserStub = sinon.stub(parser, 'transformActionToOutput');
             actStub.resolves({ "response": "aresponse"});
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {
@@ -288,12 +310,16 @@ describe('site.js', function() {
         var actStub, parserStub, site;
         
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             actStub = sinon.stub(client, 'act');
             parserStub = sinon.stub(parser, 'transformActionToOutput');
             actStub.resolves({ "response": "aresponse"});
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {
@@ -321,12 +347,16 @@ describe('site.js', function() {
         var actStub, parserStub, site;
         
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             actStub = sinon.stub(client, 'act');
             parserStub = sinon.stub(parser, 'transformActionToOutput');
             actStub.resolves({ "response": "aresponse"});
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {
@@ -355,12 +385,16 @@ describe('site.js', function() {
         var actStub, parserStub, site;
         
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             actStub = sinon.stub(client, 'act');
             parserStub = sinon.stub(parser, 'transformActionToOutput');
             actStub.resolves({ "response": "aresponse"});
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {
@@ -388,12 +422,16 @@ describe('site.js', function() {
         var actOnLockStub, parserStub, site;
         
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             actOnLockStub = sinon.stub(client, 'actOnLock');
             parserStub = sinon.stub(parser, 'transformActionOnLockToOutput');
             actOnLockStub.resolves({ "response": "aresponse"});
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {
@@ -421,12 +459,16 @@ describe('site.js', function() {
         var actOnLockStub, parserStub, site;
         
         beforeEach(function() {
+            var client = new Client();
+            var parser = new Parser();            
             actOnLockStub = sinon.stub(client, 'actOnLock');
             parserStub = sinon.stub(parser, 'transformActionOnLockToOutput');
             actOnLockStub.resolves({ "response": "aresponse"});
             parserStub.resolves({ "output": "output"});
             site = new Site('email', 'password', 'siteId');
             site._sessionCookie = 'sessionCookie';
+            site._client = client;
+            site._parser = parser;            
         });
 
         afterEach(function() {

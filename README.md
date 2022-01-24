@@ -52,6 +52,8 @@ const email = '<Your account email>',
 var settings = sectoralarm.createSettings();
 
 settings.jsonOutput = false;
+settings.numberOfRetries = 4;
+settings.retryDelayInMs = 4500;
 
 sectoralarm.connect(email,password,siteId, settings)
     .then(async (site) => {
@@ -183,12 +185,18 @@ I am currently looking for someone with cameras and smartplugs connected to a se
 
 ## Changelog
 
+### v2.1.1 - 2022-01-24
+
+* numberOfRetries and retryDelayInMs has been added to the settings class, so these values can be changed to optimal values. Defaults are set to 3 retries and 3000ms delay. Example to
+  change these settings has been added to the usage example above.
+* Updated devDependencies for security reasons.
+
 ### v2.1.0 - 2022-01-24
 
 * Retry for getStatus. For some time now, Sector alarm have been sending out errenous 401 Unauthorized status when polling to quickly. I first thought they had issues at their end,
   but as the issue haven't been resolved, another way to tackle it is to implement retry. Many poll getStatus to see if the alarm status has changed, and then react to it if it has.
   With this retry, there will be less errors when polling to fast. Current delay is hardcoded to 2 seconds pause, and retry will happen 3 times before exiting. To disable retry, send a 0 into the forth parameter of getStatus.
-* Security updates of underlying packages
+* Security updates of underlying packages,
 
 ### v2.0.6 - 2020-01-09
 

@@ -2,18 +2,20 @@ var Site = require('../lib/site.js');
 var assert = require('chai').assert;
 var expect = require('chai').expect;
 const sinon = require('sinon');
-const parser = require('../lib/parser.js');
+const Parser = require('../lib/parser.js');
 
 describe('parser.js', function () {
 
     describe('#translateCode', function () {
 
         it('a user name is returned without change', function () {
+            var parser = new Parser();
             var result = parser.translateCode("name");
             expect(result).to.be.equal("name");
         });
 
         it('a swedish Kod is returned as code', function () {
+            var parser = new Parser();
             var result = parser.translateCode("Kod");
             expect(result).to.be.equal("code");
         });
@@ -23,7 +25,7 @@ describe('parser.js', function () {
     describe('#transformStatusToOutput', function () {
 
         it('a status input is transformed correctly', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "Panel": {
                     "PanelId": 1000,
@@ -44,7 +46,7 @@ describe('parser.js', function () {
         });
 
         it('partially armed statuses are transformed to camelCase', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "Panel": {
                     "PanelId": 1000,
@@ -61,7 +63,7 @@ describe('parser.js', function () {
         });
 
         it('invalid input throws parsing error', function () {
-
+            var parser = new Parser();
             return parser.transformStatusToOutput('not json string')
                 .then(() => {
                     assert.fail();
@@ -73,7 +75,7 @@ describe('parser.js', function () {
     });
 
     describe('#transformInfoToOutput', function () {
-
+        var parser = new Parser();
         it('a status request transforms correctly', function () {
 
             var input = JSON.stringify({
@@ -123,7 +125,7 @@ describe('parser.js', function () {
         });
 
         it('invalid input throws parsing error', function () {
-
+            var parser = new Parser();
             return parser.transformInfoToOutput('not json string')
                 .then(() => {
                     assert.fail();
@@ -136,20 +138,19 @@ describe('parser.js', function () {
     });
 
     describe('#transformLocksToOutput', function () {
-
         it('empty lock array is transformed correctly', function () {
+            var parser = new Parser();
+            var locks = JSON.stringify([]);
 
-                    var locks = JSON.stringify([]);
-
-                    return parser.transformLocksToOutput(locks)
-                        .then(output => {
-                            expect(output).to.be.instanceof(Array);
-                            expect(output).to.have.lengthOf(0);
-                        });
+            return parser.transformLocksToOutput(locks)
+                .then(output => {
+                    expect(output).to.be.instanceof(Array);
+                    expect(output).to.have.lengthOf(0);
                 });
+        });
 
         it('an array with 2 locks is transformed correctly', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify([{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"lock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null},
                                         {"Label":"yaledoorman","PanelId":1000,"Serial":"124","Status":"unlock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]);
 
@@ -165,7 +166,7 @@ describe('parser.js', function () {
         });
 
         it('an array with 2 locks, but only 1 is selected. Output the selected one', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify([{"Label":"yaledoorman","PanelId":1000,"Serial":"123","Status":"lock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null},
                                         {"Label":"yaledoorman","PanelId":1000,"Serial":"124","Status":"unlock","SoundLevel":2,"AutoLockEnabled":false,"Languages":null}]);
 
@@ -179,7 +180,7 @@ describe('parser.js', function () {
         });
 
         it('invalid input throws parsing error', function () {
-
+            var parser = new Parser();
             return parser.transformLocksToOutput('not json string')
                 .then(() => {
                     assert.fail();
@@ -192,7 +193,7 @@ describe('parser.js', function () {
     });
 
     describe('#transformHistoryToOutput', function () {
-
+        var parser = new Parser();
         it('a history input is transformed correctly', function () {
 
             var input = JSON.stringify({
@@ -218,7 +219,7 @@ describe('parser.js', function () {
         });
 
         it('a history input with two records, returns two transformed records', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "LogDetails": [{
                         "Time": "2017-06-18T16:17:00",
@@ -241,7 +242,7 @@ describe('parser.js', function () {
         });
 
         it('a history input with two records, when filtering top 1 returns one transformed record', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "LogDetails": [{
                         "Time": "2017-06-18T16:17:00",
@@ -264,7 +265,7 @@ describe('parser.js', function () {
         });
 
         it('a history input partially armed status, is transformed to camelCase', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "LogDetails": [{
                     "Time": "2017-06-18T16:17:00",
@@ -280,7 +281,7 @@ describe('parser.js', function () {
         });
 
         it('a history input annex armed status, is transformed to camelCase', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "LogDetails": [{
                     "Time": "2017-06-18T16:17:00",
@@ -296,7 +297,7 @@ describe('parser.js', function () {
         });
 
         it('a history inputs user is Kod, translate to Code', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "LogDetails": [{
                     "Time": "2017-06-18T16:17:00",
@@ -312,7 +313,7 @@ describe('parser.js', function () {
         });
 
         it('invalid input throws parsing error', function () {
-
+            var parser = new Parser();
             return parser.transformHistoryToOutput('not json string')
                 .then(() => {
                     assert.fail();
@@ -326,7 +327,7 @@ describe('parser.js', function () {
     describe('#transformActionToOutput', function () {
 
         it('an action input is transformed correctly', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "panelData": {
                     "PanelDisplayName": "Home",
@@ -344,7 +345,7 @@ describe('parser.js', function () {
         });
 
         it('an action that was not successful, should throw error', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "panelData": {
                     "PanelDisplayName": "Home",
@@ -363,7 +364,7 @@ describe('parser.js', function () {
         });
 
         it('partially armed statuses are transformed to camelCase', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "panelData": {
                     "PanelDisplayName": "Home",
@@ -379,7 +380,7 @@ describe('parser.js', function () {
         });
 
         it('invalid input throws parsing error', function () {
-
+            var parser = new Parser();
             return parser.transformActionToOutput('not json string')
                 .then(() => {
                     assert.fail();
@@ -394,7 +395,7 @@ describe('parser.js', function () {
     describe('#transformActionOnLockToOutput', function () {
 
         it('lock response is transformed correctly', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({"panelData":null,"Message":null,"Status":"success"});
 
             return parser.transformActionOnLockToOutput(input)
@@ -404,7 +405,7 @@ describe('parser.js', function () {
         });
 
         it('unlock response is transformed correctly', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({"panelData":{"PanelId":"","ArmedStatus":"disarmed","PanelDisplayName":"","StatusAnnex":"unknown","PanelTime":"\/Date(1543114611000)\/","AnnexAvalible":false,"IVDisplayStatus":false,"DisplayWizard":false},"Message":null,"Status":"success"});
 
             return parser.transformActionOnLockToOutput(input)
@@ -414,7 +415,7 @@ describe('parser.js', function () {
         });
 
         it('an action that was not successful, should throw error', function () {
-
+            var parser = new Parser();
             var input = JSON.stringify({
                 "panelData": null,
                 "status": "failed"
@@ -430,7 +431,7 @@ describe('parser.js', function () {
         });
 
         it('invalid input throws parsing error', function () {
-
+            var parser = new Parser();
             return parser.transformActionOnLockToOutput('not json string')
                 .then(() => {
                     assert.fail();
@@ -444,7 +445,7 @@ describe('parser.js', function () {
 
     describe('#transformTemperaturesToOutput', function () {
         it('can parse temperatures', function () {
-
+            var parser = new Parser();
             var input = '[{"Id":null,"Label":"irnv vrum","SerialNo":"243002A01","Temprature":"26","DeviceId":null},{"Id":null,"Label":"irnv over","SerialNo":"24109105A","Temprature":"23","DeviceId":null},{"Id":null,"Label":"F1 garage","SerialNo":"24900081D","Temprature":"12","DeviceId":null}]';
 
             return parser.transformTemperaturesToOutput(input)
@@ -456,7 +457,7 @@ describe('parser.js', function () {
         });
 
         it('Filters the result to return only the supplied sensor information', function () {
-
+            var parser = new Parser();
             var input = '[{"Id":null,"Label":"irnv vrum","SerialNo":"243002A01","Temprature":"26","DeviceId":null},{"Id":null,"Label":"irnv over","SerialNo":"24109105A","Temprature":"23","DeviceId":null},{"Id":null,"Label":"F1 garage","SerialNo":"24900081D","Temprature":"12","DeviceId":null}]';
 
             return parser.transformTemperaturesToOutput(input, '24109105A')
@@ -470,7 +471,7 @@ describe('parser.js', function () {
         });
 
         it('invalid input throws parsing error', function () {
-
+            var parser = new Parser();
             return parser.transformTemperaturesToOutput('not json string')
                 .then(() => {
                     assert.fail();

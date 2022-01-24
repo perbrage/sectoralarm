@@ -3,12 +3,13 @@ var expect = require('chai').expect;
 const sinon = require('sinon');
 const https = require('https');
 const nock = require('nock');
-const client = require('../lib/client.js');
+const Client = require('../lib/client.js');
 
 
 describe('client.js', function() {
 
-    it('has the correct url to sector alarm api', function(){
+    it('has the correct url to sector alarm api', function() {
+        var client = new Client();
         var url = client._sectoralarmsite;
         assert.equal(url, 'mypagesapi.sectoralarm.net');
     });
@@ -19,7 +20,7 @@ describe('client.js', function() {
         });
 
         it('connection problems throws error',function() {
-            
+            var client = new Client();
             nock('https://mypagesapi.sectoralarm.net')
             .post('/User/Login?ReturnUrl=%2f')
             .replyWithError(404);
@@ -34,7 +35,7 @@ describe('client.js', function() {
         });
 
         it('bad login information throws credentials error', async function() {
-            
+            var client = new Client();
             nock('https://mypagesapi.sectoralarm.net')
             .post('/User/Login?ReturnUrl=%2f')
             .reply(200);
@@ -49,7 +50,7 @@ describe('client.js', function() {
         });        
 
         it('successful login returns access token', async function() {
-
+            var client = new Client();
             var accessTokenCookie = 'mycookie';
             var headers = {
                 "set-cookie": accessTokenCookie,
@@ -72,7 +73,7 @@ describe('client.js', function() {
         });
 
         it('connection problems throws error', function() {
-            
+            var client = new Client();
             nock('https://mypagesapi.sectoralarm.net')
             .head('/User/Login')
             .replyWithError(404);
@@ -87,7 +88,7 @@ describe('client.js', function() {
         });
 
         it('successful request returns request cookie', function() {
-
+            var client = new Client();
             var requestTokenCookie = 'mycookie';
 
             nock('https://mypagesapi.sectoralarm.net')
@@ -107,7 +108,7 @@ describe('client.js', function() {
         });
 
         it('called with invalid command, throws error', function() {
-
+            var client = new Client();
             return client.actOnLock('fake', 'fake', 'fake', 'fake', 'fake')
                 .then(cookie => {
                     assert.fail();
@@ -118,7 +119,7 @@ describe('client.js', function() {
         });
 
         it('when session token expires, throws error',function() {
-            
+            var client = new Client();
             nock('https://mypagesapi.sectoralarm.net')
             .post('/Locks/Lock')
             .reply(401);
@@ -133,7 +134,7 @@ describe('client.js', function() {
         });
 
         it('connection problems throws error',function() {
-            
+            var client = new Client();
             nock('https://mypagesapi.sectoralarm.net')
             .post('/Locks/Lock')
             .replyWithError(404);
@@ -148,7 +149,7 @@ describe('client.js', function() {
         });
 
         it('with correct login information, returns response',function() {
-            
+            var client = new Client();
             var fakeResponse = 'response';
 
             nock('https://mypagesapi.sectoralarm.net')
@@ -170,7 +171,7 @@ describe('client.js', function() {
         });
 
         it('called with invalid command, throws error', function() {
-
+            var client = new Client();
             return client.act('fake', 'fake', 'fake', 'fake')
                 .then(cookie => {
                     assert.fail();
@@ -181,7 +182,7 @@ describe('client.js', function() {
         });
 
         it('when session token expires, throws error',function() {
-            
+            var client = new Client();
             nock('https://mypagesapi.sectoralarm.net')
             .post('/Panel/ArmPanel/')
             .reply(401);
@@ -196,7 +197,7 @@ describe('client.js', function() {
         });
 
         it('connection problems throws error',function() {
-            
+            var client = new Client();
             nock('https://mypagesapi.sectoralarm.net')
             .post('/Panel/ArmPanel/')
             .replyWithError(404);
@@ -211,7 +212,7 @@ describe('client.js', function() {
         });
 
         it('with correct login information, returns response',function() {
-            
+            var client = new Client();
             var fakeResponse = 'response';
 
             nock('https://mypagesapi.sectoralarm.net')

@@ -1,6 +1,6 @@
 {
   "name": "sectoralarm",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A simple Node.js library to check the status and history of Swedish Sector Alarm sites. Library also includes a notify functionality that executes a callback as the alarm status changes. This library uses https://minasidor.sectoralarm.se, and is intended for Swedish Sector Alarm customers.",
   "main": "./lib/sectoralarm.js",
   "directories": {
@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "chai": "^4.3.4",
-    "mocha": "^9.1.3",
+    "mocha": "^9.2.0",
     "nock": "^13.2.1",
     "nyc": "^15.1.0",
     "sinon": "^12.0.1"
