@@ -4,6 +4,7 @@ const sinon = require('sinon');
 const https = require('https');
 const nock = require('nock');
 const Client = require('../lib/client.js');
+const Settings = require("../lib/settings.js");
 
 
 describe('client.js', function() {
@@ -108,7 +109,7 @@ describe('client.js', function() {
         });
 
         it('called with invalid command, throws error', function() {
-            var client = new Client();
+            var client = new Client(new Settings());
             return client.actOnLock('fake', 'fake', 'fake', 'fake', 'fake')
                 .then(cookie => {
                     assert.fail();
@@ -119,12 +120,12 @@ describe('client.js', function() {
         });
 
         it('when session token expires, throws error',function() {
-            var client = new Client();
+            var client = new Client(new Settings());
             nock('https://mypagesapi.sectoralarm.net')
             .post('/Locks/Lock')
             .reply(401);
 
-            return client.actOnLock('fake', 'fake', 'fake', 'fake', 'Lock')
+            return client.actOnLock('fake', 'fake', 'fake', 'fake', 'Lock',0)
                 .then(cookie => {
                     assert.fail();
                 })
@@ -134,7 +135,7 @@ describe('client.js', function() {
         });
 
         it('connection problems throws error',function() {
-            var client = new Client();
+            var client = new Client(new Settings());
             nock('https://mypagesapi.sectoralarm.net')
             .post('/Locks/Lock')
             .replyWithError(404);
@@ -149,7 +150,7 @@ describe('client.js', function() {
         });
 
         it('with correct login information, returns response',function() {
-            var client = new Client();
+            var client = new Client(new Settings());
             var fakeResponse = 'response';
 
             nock('https://mypagesapi.sectoralarm.net')
@@ -171,7 +172,7 @@ describe('client.js', function() {
         });
 
         it('called with invalid command, throws error', function() {
-            var client = new Client();
+            var client = new Client(new Settings());
             return client.act('fake', 'fake', 'fake', 'fake')
                 .then(cookie => {
                     assert.fail();
@@ -182,12 +183,12 @@ describe('client.js', function() {
         });
 
         it('when session token expires, throws error',function() {
-            var client = new Client();
+            var client = new Client(new Settings());
             nock('https://mypagesapi.sectoralarm.net')
             .post('/Panel/ArmPanel/')
             .reply(401);
 
-            return client.act('fake', 'fake', 'fake', 'Disarm')
+            return client.act('fake', 'fake', 'fake', 'Disarm',0)
                 .then(cookie => {
                     assert.fail();
                 })
@@ -197,7 +198,7 @@ describe('client.js', function() {
         });
 
         it('connection problems throws error',function() {
-            var client = new Client();
+            var client = new Client(new Settings());
             nock('https://mypagesapi.sectoralarm.net')
             .post('/Panel/ArmPanel/')
             .replyWithError(404);
@@ -212,7 +213,7 @@ describe('client.js', function() {
         });
 
         it('with correct login information, returns response',function() {
-            var client = new Client();
+            var client = new Client(new Settings());
             var fakeResponse = 'response';
 
             nock('https://mypagesapi.sectoralarm.net')
