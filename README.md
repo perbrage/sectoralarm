@@ -26,7 +26,7 @@ Sweden      | http://www.sectoralarm.se  | Yes
 Norway      | http://www.sectoralarm.no  | Yes
 Finland     | http://www.sectoralarm.fi  | Yes
 Spain       | http://www.sectoralarm.es  | No
-Ireland     | http://www.phonewatch.ie   | No
+Ireland     | http://www.phonewatch.ie   | Yes
 
 If you use this library in a country listed above as not verified, please drop me a note.
 You can visit Sector Alarm Group http://www.sectoralarm.com 
@@ -36,6 +36,26 @@ You can visit Sector Alarm Group http://www.sectoralarm.com
 ```bash
 npm install sectoralarm
 ```
+
+## Account and other configuration identifiers
+
+Connecting and acting upon your alarm requires you to have an account with Sector Alarm. Your e-mail and account password, together with a SiteId is required to connect. SiteId is required to identify which site you want to connect to and fetch information from or act upon. This is a feature that allows for users with multiple homes to connect to different homes/sites.
+
+### Account information
+
+Account information is your e-mail and password used when creating an account with Sector Alarm.
+
+### SiteId
+
+To find out your siteId, browse to https://mypagesapi.sectoralarm.net. Login using your accounts e-mail and password. After you have been authenticated, you can have a look at the URL in your browser. At the end of the URL you will find your SiteId. Example .../#!/systems/01234567
+
+### Code
+
+The code is your alarm panel code. You can add/edit codes in Sector Alarms app for different users. The code used will identify who armed/disarmed your site. You can also apply a setting that codes are not required on your account for arming the site. In that case a code is not needed when arming.
+
+### Ids of different devices
+
+To find out the identifiers of your devices, locks, smartplugs and such, use the different methods to aquire the information, for example .locks(), .temperatures(), .info() etc.
 
 ## Usage example
 
