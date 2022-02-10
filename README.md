@@ -26,7 +26,7 @@ Sweden      | http://www.sectoralarm.se  | Yes
 Norway      | http://www.sectoralarm.no  | Yes
 Finland     | http://www.sectoralarm.fi  | Yes
 Spain       | http://www.sectoralarm.es  | No
-Ireland     | http://www.phonewatch.ie   | No
+Ireland     | http://www.phonewatch.ie   | Yes
 
 If you use this library in a country listed above as not verified, please drop me a note.
 You can visit Sector Alarm Group http://www.sectoralarm.com 
